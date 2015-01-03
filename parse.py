@@ -1,14 +1,20 @@
 import sys, os, glob, codecs
 import nltk
 
-tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
-tokenize = tokenizer.tokenize
+try:
+    tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
+except:
+    tokenizer = None
+    
+def tokenize(text, train = True):
+    global tokenizer
+    
+    if train or tokenizer is None:
+        trainer = nltk.tokenize.punkt.PunktTrainer()
+        trainer.train(text)
+        tokenizer = nltk.tokenize.punkt.PunktSentenceTokenizer(trainer.get_params())
 
-#def tokenize(text):
-#    trainer = nltk.tokenize.punkt.PunktTrainer()
-#    trainer.train(text)
-#    tokenizer = nltk.tokenize.punkt.PunktSentenceTokenizer(trainer)
-#    return tokenizer.sentences_from_text(text)
+    return tokenizer.tokenize(text)
 
 def parse(text):
     for raw in tokenize(text):
