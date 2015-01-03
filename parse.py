@@ -2,9 +2,16 @@ import sys, os, glob, codecs
 import nltk
 
 tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
+tokenize = tokenizer.tokenize
 
-def parse(f):
-    for raw in tokenizer.tokenize(f):
+#def tokenize(text):
+#    trainer = nltk.tokenize.punkt.PunktTrainer()
+#    trainer.train(text)
+#    tokenizer = nltk.tokenize.punkt.PunktSentenceTokenizer(trainer)
+#    return tokenizer.sentences_from_text(text)
+
+def parse(text):
+    for raw in tokenize(text):
         yield raw.replace("\r\n\r\n","\n").replace("\r\n"," ")
 
 def golf(ss,length = 140):
